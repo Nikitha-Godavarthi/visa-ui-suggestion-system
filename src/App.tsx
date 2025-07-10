@@ -6,7 +6,7 @@ function App() {
   const [suggestions, setSuggestions] = useState([])
 
   const fetchSuggestions = async () => {
-    const res = await fetch('http://localhost:3001/suggest', {
+    const res = await fetch('https://suggestion-backend-visa.onrender.com/suggest', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
