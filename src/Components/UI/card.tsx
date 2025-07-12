@@ -15,9 +15,17 @@ export function Card(props: React.ComponentProps<typeof ContentCard>) {
   return <ContentCard {...props} />;
 }
 
-export function CardBody(props: React.ComponentProps<typeof ContentCardBody>) {
+export function CardBody({
+  children,
+  className,
+  ...props
+}: React.ComponentProps<typeof ContentCardBody>) {
   return (
-    <Utility element={<ContentCardBody />} vFlex vFlexCol vGap={2} {...props} />
+    <Utility vFlex vFlexCol vGap={4}>
+      <ContentCardBody className={className} {...props}>
+        {children}
+      </ContentCardBody>
+    </Utility>
   );
 }
 
