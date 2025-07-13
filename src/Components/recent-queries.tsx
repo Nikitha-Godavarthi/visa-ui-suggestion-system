@@ -1,7 +1,7 @@
 "use client"
 
 import { VisaTimeTiny } from "@visa/nova-icons-react"
-import { Typography, Utility, Badge } from "@visa/nova-react"
+import { Typography, Utility, Button } from "@visa/nova-react"
 import { Card } from "@/Components/UI/card"
 
 interface RecentQueriesProps {
@@ -17,7 +17,7 @@ export function RecentQueries({ queries, onSelectQuery }: RecentQueriesProps) {
       <Utility vFlexCol vGap={4} vPadding={20}>
         <Utility vFlex vAlignItems="center" vColGap={6}>
           <VisaTimeTiny/>
-          <Typography variant="headline-4">Recent Queries</Typography>
+          <Typography variant="headline-3">Recent Queries</Typography>
         </Utility>
 
         <Typography variant="body-2" colorScheme="subtle">
@@ -26,19 +26,24 @@ export function RecentQueries({ queries, onSelectQuery }: RecentQueriesProps) {
 
         <Utility vFlex vFlexCol vGap={10} vMarginTop={12}>
           {queries.map((query, index) => (
-            <Badge
+            <Button
               key={index}
               onClick={() => onSelectQuery(query)}
-              badgeType="subtle"
+              style={{
+                padding: "16px 32px",
+                fontSize: "1.1rem",
+                background: "#d1d5db",
+                color: "#1f2937"
+              }}
             >
             <Utility vPaddingLeft={6} vPaddingRight={6}>
               <Typography
-                variant="body-2"
+                variant="button-medium"
               >
                 {query}
               </Typography>
             </Utility>
-            </Badge>
+            </Button>
           ))}
         </Utility>
       </Utility>
