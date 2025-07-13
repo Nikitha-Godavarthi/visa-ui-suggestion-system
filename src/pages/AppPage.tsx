@@ -387,7 +387,6 @@ export function AppPage() {
                     "Payment card with amount and status",
                     "Navigation header with user menu",
                     "Data table with sorting and pagination",
-                    "Modal dialog for confirmation",
                   ].map((example, index) => (
                     <Button key={index} onClick={() => setQuery(example)}
                     style={{

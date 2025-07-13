@@ -182,49 +182,109 @@ export function LoginForm() {
 }`;
     }
 
+    if (query.includes("profile card") || query.includes("avatar card") || query.includes("user details")) {
+      return `
+    import { Avatar, Card, Typography, Utility } from '@visa/nova-react';
+    
+    export function UserProfileCard() {
+      return (
+        <Card>
+          <Utility vFlex vFlexCol vAlignItems="center" vGap={4}>
+            <Avatar src="/avatar.png" alt="Jane Doe" tag="img" />
+            <Typography variant="headline-4">Jane Doe</Typography>
+            <Typography variant="body-medium">Frontend Developer at Visa</Typography>
+          </Utility>
+        </Card>
+      );
+    }`;
+    }
+    
+    if (query.includes("contact") || query.includes("support form") || query.includes("help form")) {
+      return `
+    import { Button, Input, InputContainer, Label, Card, Utility } from '@visa/nova-react';
+    import { useState } from 'react';
+    
+    export function ContactForm() {
+      const [email, setEmail] = useState('');
+      const [message, setMessage] = useState('');
+    
+      return (
+        <Card>
+          <Utility vFlex vFlexCol vGap={6}>
+            <Label htmlFor="email">Email</Label>
+            <InputContainer>
+              <Input id="email" type="email" placeholder="your@email.com" value={email} onChange={(e) => setEmail(e.target.value)} />
+            </InputContainer>
+    
+            <Label htmlFor="message">Message</Label>
+            <InputContainer>
+              <Input id="message" placeholder="Type your message..." value={message} onChange={(e) => setMessage(e.target.value)} />
+            </InputContainer>
+    
+            <Button variant="primary">Send</Button>
+          </Utility>
+        </Card>
+      );
+    }`;
+    }
+    
     if (query.includes("credit card") || query.includes("payment")) {
       return `
 import { Input, InputContainer, Label, Card, Utility, Button } from '@visa/nova-react';
 
-export function CreditCardForm() {
+export function PaymentCard() {
   return (
     <Card>
       <Utility vFlex vFlexCol vGap={6}>
-        <Label htmlFor="cardNumber">Card Number</Label>
+        <Label htmlFor="amount">Amount</Label>
         <InputContainer>
-          <Input id="cardNumber" placeholder="1234 5678 9012 3456" />
+          <Input id="amount" placeholder="$100.00" />
         </InputContainer>
 
-        <Label htmlFor="expiry">Expires (MM/YY)</Label>
-        <Utility vFlex vFlexRow vGap={4}>
-          <Input placeholder="MM" /> / <Input placeholder="YY" />
-        </Utility>
-
-        <Label htmlFor="cvv">Security Code</Label>
+        <Label htmlFor="status">Status</Label>
         <InputContainer>
-          <Input id="cvv" type="password" placeholder="•••" />
+          <Input id="status" placeholder="Paid / Pending" />
         </InputContainer>
 
-        <Button variant="primary">Submit Payment</Button>
+        <Button variant="primary">Process</Button>
       </Utility>
     </Card>
   );
 }`;
     }
 
-    if (query.includes("pagination") || query.includes("table")) {
+    if (query.includes("navigation") || query.includes("header") || query.includes("user menu")) {
+      return `
+import { Avatar, Utility, Typography, Button } from '@visa/nova-react';
+import { VisaChevronDownTiny } from '@visa/nova-icons-react';
+
+export function NavigationHeader() {
+  return (
+    <Utility vFlexRow vJustifyContent="between" vAlignItems="center" style={{ padding: '1rem', borderBottom: '1px solid #ccc' }}>
+      <Typography variant="headline-3">My App</Typography>
+      <Utility vFlexRow vAlignItems="center" vGap={8}>
+        <Avatar src="/profile.png" alt="User" small tag="img" />
+        <Button variant="subtle" iconRight={<VisaChevronDownTiny />}>Menu</Button>
+      </Utility>
+    </Utility>
+  );
+}`;
+    }
+
+    if (query.includes("pagination") || query.includes("table") || query.includes("sort")) {
       return `
 import { Table, Card, Pagination, PaginationOverflow, Button } from '@visa/nova-react';
 import { VisaChevronLeftTiny, VisaChevronRightTiny, VisaOptionHorizontalTiny } from '@visa/nova-icons-react';
 
-export function PaginatedTable() {
+export function DataTableWithPagination() {
   const data = [
-    { name: 'Alice', email: 'alice@visa.com' },
-    { name: 'Bob', email: 'bob@visa.com' },
+    { name: 'Alice', email: 'alice@visa.com', status: 'Active' },
+    { name: 'Bob', email: 'bob@visa.com', status: 'Inactive' },
   ];
   const columns = [
     { key: 'name', label: 'Name' },
     { key: 'email', label: 'Email' },
+    { key: 'status', label: 'Status' },
   ];
 
   return (
