@@ -1,7 +1,7 @@
 "use client"
 import type React from "react"
 import { useState } from "react"
-import { Typography, Button, Input, InputContainer, Label, Utility, Badge, Surface, Chip } from "@visa/nova-react"
+import { Typography, Button, Input, InputContainer, Utility, Badge, Surface, Chip } from "@visa/nova-react"
 import { VisaIdeaTiny, VisaCodeSnippetLow, VisaCopyLow, GenericSearchLow } from "@visa/nova-icons-react"
 import { toast } from "sonner"
 import { Sparkles } from "lucide-react"
@@ -10,11 +10,7 @@ import { RecentQueries } from "@/Components/recent-queries"
 import { Header } from "@/Components/Header"
 import { Card, CardBody, CardDescription } from "@/Components/UI/card"
 
-interface AppPageProps {
-  onBackToHome?: () => void
-}
-
-export function AppPage({ onBackToHome }: AppPageProps) {
+export function AppPage() {
   const [query, setQuery] = useState("")
   const [isFocused, setIsFocused] = useState(false)
   const [suggestions, setSuggestions] = useState<any>(null)
