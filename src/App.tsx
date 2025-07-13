@@ -13,16 +13,12 @@ function App() {
     setCurrentPage("app")
   }
 
-  const handleBackToHome = () => {
-    setCurrentPage("landing")
-  }
-
   return (
     <>
       {currentPage === "landing" ? (
         <LandingPage onGetStarted={handleGetStarted} />
       ) : (
-        <AppPage onBackToHome={handleBackToHome} />
+        <AppPage/>
       )}
     </>
   )
