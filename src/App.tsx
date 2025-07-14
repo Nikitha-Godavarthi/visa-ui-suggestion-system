@@ -1,26 +1,34 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { LandingPage } from "@/Components/LandingPage"
 import { AppPage } from "./pages/AppPage"
 
 type CurrentPage = "landing" | "app"
 
+const CURRENT_PAGE_KEY = "currentPage"
+
 function App() {
-  const [currentPage, setCurrentPage] = useState<CurrentPage>("landing")
+  const [currentPage, setCurrentPage] = useState<CurrentPage>(() => {
+
+    if (typeof window !== "undefined") {
+      return (localStorage.getItem(CURRENT_PAGE_KEY) as CurrentPage) || "landing"
+    }
+    return "landing"
+  })
+
+  useEffect(() => {
+    localStorage.setItem(CURRENT_PAGE_KEY, currentPage)
+  }, [currentPage])
 
   const handleGetStarted = () => {
     setCurrentPage("app")
   }
 
-  return (
-    <>
-      {currentPage === "landing" ? (
-        <LandingPage onGetStarted={handleGetStarted} />
-      ) : (
-        <AppPage/>
-      )}
-    </>
+  return currentPage === "landing" ? (
+    <LandingPage onGetStarted={handleGetStarted} />
+  ) : (
+    <AppPage />
   )
 }
 
