@@ -1,6 +1,7 @@
 "use client"
 import { Typography, Button, Utility, Surface } from "@visa/nova-react"
-import { Sparkles, Code, Zap, Palette } from "lucide-react"
+import {GenericCodeSnippetHigh, GenericCameraFlashHigh} from "@visa/nova-icons-react"
+import { Sparkles, Palette } from "lucide-react"
 import { Header } from "@/Components/Header"
 
 interface LandingPageProps {
@@ -118,7 +119,7 @@ export function LandingPage({ onGetStarted }: LandingPageProps) {
                     color: "white",
                   }}
                 >
-                  <Code size={32} />
+                  <GenericCodeSnippetHigh style={{ width: 32, height: 32 }} />
                 </div>
                 <Typography variant="headline-3" style={{ textAlign: "center" }}>
                   Instant Code Generation
@@ -151,7 +152,7 @@ export function LandingPage({ onGetStarted }: LandingPageProps) {
                     color: "white",
                   }}
                 >
-                  <Zap size={32} />
+                  <GenericCameraFlashHigh style={{ width: 32, height: 32 }} />
                 </div>
                 <Typography variant="headline-3" style={{ textAlign: "center" }}>
                   Lightning Fast

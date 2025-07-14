@@ -31,7 +31,8 @@ export function AppPage() {
     try {
       const result = await fetchSuggestions(query);
       setSuggestions(result);
-      setRecentQueries([query, ...recentQueries.filter((q) => q !== query)].slice(0, 5));
+      const updated = await fetchRecentQueries();
+      setRecentQueries(updated);
     } catch (error) {
       console.error("Suggestion error:", error);
     } finally {
@@ -109,7 +110,12 @@ export function AppPage() {
             <CardBody>
               <Utility vFlex vFlexCol vRowGap={8}>
                 <Utility vFlex vAlignItems="center" vColGap={6}>
-                  <VisaIdeaLow />
+                  <VisaIdeaLow 
+                  style=
+                  {{
+                  width: 16, 
+                  height: 16,
+                  }}/>
                   <Typography variant="headline-3">Describe Your Component</Typography>
                 </Utility>
                 <CardDescription>Tell us what you want to build.</CardDescription>
@@ -140,9 +146,10 @@ export function AppPage() {
                         top: "50%",
                         transform: "translateY(-50%)",
                         pointerEvents: "none",
-                        width: "1.25rem",
-                        height: "1.25rem",
+                        width: 16, 
+                        height: 16
                       }}
+                      
                     />
                   </Utility>
                 </InputContainer>
@@ -195,7 +202,11 @@ export function AppPage() {
                   <Card>
                     <CardBody>
                       <Utility vFlex vAlignItems="center" vMarginBottom={4} vColGap={6}>
-                        <VisaCodeSnippetLow />
+                        <VisaCodeSnippetLow 
+                        style={{
+                            width: 24, 
+                            height: 24,
+                            }}/>
                         <Typography variant="headline-3">Suggested Components</Typography>
                       </Utility>
                       <CardDescription>
@@ -283,7 +294,11 @@ export function AppPage() {
                       <Utility vFlex vFlexCol vGap={4}>
                         <Utility vFlex vAlignItems="center" vJustifyContent="between">
                           <Utility vFlex vAlignItems="center" vGap={6}>
-                            <VisaCodeSnippetLow style={{ color: "var(--palette-success-default)" }} />
+                            <VisaCodeSnippetLow 
+                            style={{
+                              width: 24, 
+                              height: 24,
+                              }}/>
                             <Typography variant="headline-3">Generated Code</Typography>
                           </Utility>
                           {/* Copy Button */}
