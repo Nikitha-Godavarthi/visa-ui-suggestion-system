@@ -10,6 +10,8 @@ import { Header } from "@/Components/Header"
 import { Card, CardBody, CardDescription } from "@/Components/UI/card"
 import { fetchSuggestions } from "@/API/suggest";
 import { fetchRecentQueries } from "@/API/recent"; 
+import { OnboardingTour } from "@/Components/OnBoardingTour";
+import { useOnboardingTour } from "@/hooks/useOnboardingTour";
 
 export function AppPage() {
   const [query, setQuery] = useState("")
@@ -19,6 +21,7 @@ export function AppPage() {
   const [copied, setCopied] = useState(false)
   const [recentQueries, setRecentQueries] = useState<string[]>([])
   const [copiedComponentIndex, setCopiedComponentIndex] = useState<number | null>(null)
+  const { showTour, dismissTour } = useOnboardingTour();
 
   const handleSuggest = async () => {
     if (!query.trim()) return;
@@ -58,6 +61,8 @@ export function AppPage() {
   }
 
   return (
+    <>
+    {showTour && <OnboardingTour onClose={dismissTour} />}
     <div style={{ minHeight: "100vh" }}>
       <div
     style={{
@@ -488,5 +493,6 @@ export function AppPage() {
         </Utility>
       </Utility>
     </div>
+    </>
   )
 }
