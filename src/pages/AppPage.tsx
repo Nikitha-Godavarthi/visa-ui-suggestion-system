@@ -1,6 +1,6 @@
 "use client"
 import type React from "react"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Typography, Button, Input, InputContainer, Utility, Badge, Surface, Chip } from "@visa/nova-react"
 import { VisaIdeaLow, VisaCodeSnippetLow, VisaCopyLow, GenericSearchLow } from "@visa/nova-icons-react"
 import { toast } from "sonner"
@@ -71,6 +71,15 @@ export function AppPage({ onGoHome }: { onGoHome: () => void }) {
       setTimeout(() => setCopiedComponentIndex(null), 2000)
     })
   }
+
+      // Load recent queries on mount
+    useEffect(() => {
+      const existingQueries = loadRecentQueries();
+      if (existingQueries.length > 0) {
+        setRecentQueries(existingQueries);
+      }
+    }, []);
+
 
   return (
     <>
@@ -440,8 +449,8 @@ export function AppPage({ onGoHome }: { onGoHome: () => void }) {
 
           {/* Right - Sidebar */}
           <Utility style={{ flex: "1 1 300px", minWidth: "280px", maxWidth: "100%"}}>
-            {suggestions && recentQueries.length > 0 && (
-              <RecentQueries queries={recentQueries} onSelectQuery={setQuery} />
+          {recentQueries.length > 0 && (
+    <RecentQueries queries={recentQueries} onSelectQuery={(selected) => setQuery(selected)} />
             )}
             <Utility vMarginBottom={24}>
             <Card>
