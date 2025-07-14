@@ -1,6 +1,6 @@
 "use client"
 import type React from "react"
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import { Typography, Button, Input, InputContainer, Utility, Badge, Surface, Chip } from "@visa/nova-react"
 import { VisaIdeaLow, VisaCodeSnippetLow, VisaCopyLow, GenericSearchLow } from "@visa/nova-icons-react"
 import { toast } from "sonner"
