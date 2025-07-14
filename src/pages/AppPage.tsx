@@ -9,9 +9,28 @@ import { RecentQueries } from "@/Components/recent-queries"
 import { Header } from "@/Components/Header"
 import { Card, CardBody, CardDescription } from "@/Components/UI/card"
 import { fetchSuggestions } from "@/API/suggest";
-import { fetchRecentQueries } from "@/API/recent"; 
 import { OnboardingTour } from "@/Components/OnBoardingTour";
 import { useOnboardingTour } from "@/hooks/useOnboardingTour";
+
+
+const RECENT_QUERY_KEY = "recentQueries";
+
+  function loadRecentQueries(): string[] {
+    try {
+      return JSON.parse(localStorage.getItem(RECENT_QUERY_KEY) || "[]");
+    } catch {
+      return [];
+    }
+  }
+
+  function saveRecentQuery(query: string) {
+    if (!query) return;
+    const existing = loadRecentQueries().filter((q) => q !== query);
+    const updated = [query, ...existing].slice(0, 5);
+    localStorage.setItem(RECENT_QUERY_KEY, JSON.stringify(updated));
+  }
+
+
 
 export function AppPage() {
   const [query, setQuery] = useState("")
@@ -27,12 +46,12 @@ export function AppPage() {
     if (!query.trim()) return;
   
     setIsLoading(true);
-  
+
     try {
       const result = await fetchSuggestions(query);
       setSuggestions(result);
-      const updated = await fetchRecentQueries();
-      setRecentQueries(updated);
+      saveRecentQuery(query); // Save to localStorage
+      setRecentQueries(loadRecentQueries()); // Refresh view
     } catch (error) {
       console.error("Suggestion error:", error);
     } finally {
@@ -40,14 +59,6 @@ export function AppPage() {
     }
   };
   
-  useEffect(() => {
-    async function loadRecent() {
-      const recent = await fetchRecentQueries();
-      setRecentQueries(recent);
-    }
-    loadRecent();
-  }, []);
-
   const handleKeyPress = (e: React.KeyboardEvent) => {
     if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) {
       handleSuggest()

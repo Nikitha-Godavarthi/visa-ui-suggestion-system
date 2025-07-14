@@ -17,8 +17,8 @@ export function LandingPage({ onGetStarted }: LandingPageProps) {
       left: 0,
       right: 0,
       zIndex: 1000,
-      backgroundColor: "white", // Optional: match theme
-      boxShadow: "0 2px 4px rgba(0,0,0,0.05)", // Optional: subtle shadow
+      backgroundColor: "white",
+      boxShadow: "0 2px 4px rgba(0,0,0,0.05)", 
     }}
   >
       <Header showGetStarted onGetStarted={onGetStarted} />
@@ -29,7 +29,7 @@ export function LandingPage({ onGetStarted }: LandingPageProps) {
         vMarginTop={48}
         vPadding={16}
         style={{
-          minHeight: "calc(100vh - 80px)",
+          minHeight: "calc(100vh)",
           background: "linear-gradient(to bottom right, #eff6ff, #ffffff, #eef2ff)",
         }}
       >
