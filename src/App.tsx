@@ -8,28 +8,27 @@ type CurrentPage = "landing" | "app"
 const CURRENT_PAGE_KEY = "currentPage"
 
 function App() {
-  const [currentPage, setCurrentPage] = useState<CurrentPage | null>(null) // null = not ready yet
+  const [currentPage, setCurrentPage] = useState<CurrentPage | null>(null)
 
   useEffect(() => {
-    const storedPage = localStorage.getItem(CURRENT_PAGE_KEY) as CurrentPage | null
-    setCurrentPage(storedPage || "landing")
+    const navType = performance.getEntriesByType("navigation")[0] as PerformanceNavigationTiming
+
+    if (navType && navType.type === "reload") {
+      const sessionPage = sessionStorage.getItem(CURRENT_PAGE_KEY) as CurrentPage | null
+      setCurrentPage(sessionPage || "landing")
+    } else {
+      setCurrentPage("landing")
+    }
   }, [])
 
   useEffect(() => {
     if (currentPage) {
-      localStorage.setItem(CURRENT_PAGE_KEY, currentPage)
+      sessionStorage.setItem(CURRENT_PAGE_KEY, currentPage)
     }
   }, [currentPage])
 
-  const handleGetStarted = () => {
-    setCurrentPage("app")
-    localStorage.setItem(CURRENT_PAGE_KEY, "app")
-  }
-
-  const handleGoHome = () => {
-    setCurrentPage("landing")
-    localStorage.setItem(CURRENT_PAGE_KEY, "landing")
-  }
+  const handleGetStarted = () => setCurrentPage("app")
+  const handleGoHome = () => setCurrentPage("landing")
 
   if (!currentPage) return null
 
