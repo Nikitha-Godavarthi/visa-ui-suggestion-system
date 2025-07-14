@@ -35,13 +35,13 @@ export function RecentQueries({ queries, onSelectQuery }: RecentQueriesProps) {
               fontSize: "1.1rem",
               backgroundColor: "transparent",
               color: "#1f2937",
-              border: "1px solid #d1d5db", // gray border
+              border: "1px solid #d1d5db",
               borderRadius: "8px",
               transition: "background-color 0.2s ease, border-color 0.2s ease",
             }}
             onMouseEnter={(e) => {
               const btn = e.currentTarget as HTMLButtonElement;
-              btn.style.backgroundColor = "#e5e7eb"; // Tailwind gray-200
+              btn.style.backgroundColor = "#e5e7eb";
               btn.style.borderColor = "#d1d5db";
             }}
             onMouseLeave={(e) => {
