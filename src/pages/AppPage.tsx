@@ -1,6 +1,6 @@
 "use client"
 import type React from "react"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Typography, Button, Input, InputContainer, Utility, Badge, Surface, Chip } from "@visa/nova-react"
 import { VisaIdeaLow, VisaCodeSnippetLow, VisaCopyLow, GenericSearchLow } from "@visa/nova-icons-react"
 import { toast } from "sonner"
@@ -9,6 +9,7 @@ import { RecentQueries } from "@/Components/recent-queries"
 import { Header } from "@/Components/Header"
 import { Card, CardBody, CardDescription } from "@/Components/UI/card"
 import { fetchSuggestions } from "@/API/suggest";
+import { fetchRecentQueries } from "@/API/recent"; 
 
 export function AppPage() {
   const [query, setQuery] = useState("")
@@ -35,6 +36,13 @@ export function AppPage() {
     }
   };
   
+  useEffect(() => {
+    async function loadRecent() {
+      const recent = await fetchRecentQueries();
+      setRecentQueries(recent);
+    }
+    loadRecent();
+  }, []);
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
     if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) {
