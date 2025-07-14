@@ -27,23 +27,33 @@ export function RecentQueries({ queries, onSelectQuery }: RecentQueriesProps) {
         <Utility vFlex vFlexCol vGap={10} vMarginTop={12}>
           {queries.map((query, index) => (
             <Button
-              key={index}
-              onClick={() => onSelectQuery(query)}
-              style={{
-                padding: "16px 32px",
-                fontSize: "1.1rem",
-                background: "#d1d5db",
-                color: "#1f2937"
-              }}
-            >
+            key={index}
+            onClick={() => onSelectQuery(query)}
+            style={{
+              padding: "16px 32px",
+              fontSize: "1.1rem",
+              backgroundColor: "transparent",
+              color: "#1f2937",
+              border: "1px solid #d1d5db", // gray border
+              borderRadius: "8px",
+              transition: "background-color 0.2s ease, border-color 0.2s ease",
+            }}
+            onMouseEnter={(e) => {
+              const btn = e.currentTarget as HTMLButtonElement;
+              btn.style.backgroundColor = "#e5e7eb"; // Tailwind gray-200
+              btn.style.borderColor = "#d1d5db";
+            }}
+            onMouseLeave={(e) => {
+              const btn = e.currentTarget as HTMLButtonElement;
+              btn.style.backgroundColor = "transparent";
+              btn.style.borderColor = "#d1d5db";
+            }}
+          >
             <Utility vPaddingLeft={6} vPaddingRight={6}>
-              <Typography
-                variant="button-medium"
-              >
-                {query}
-              </Typography>
+              <Typography variant="button-medium">{query}</Typography>
             </Utility>
-            </Button>
+          </Button>
+          
           ))}
         </Utility>
       </Utility>

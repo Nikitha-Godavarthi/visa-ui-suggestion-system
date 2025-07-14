@@ -10,6 +10,7 @@ import { RecentQueries } from "@/Components/recent-queries"
 import { Header } from "@/Components/Header"
 import { Card, CardBody, CardDescription } from "@/Components/UI/card"
 
+
 export function AppPage() {
   const [query, setQuery] = useState("")
   const [isFocused, setIsFocused] = useState(false)
@@ -43,9 +44,8 @@ export function AppPage() {
   }
 
   return (
-    <div style={{ minHeight: "100vh" }}>
-      <Header />
-
+    <div style={{ minHeight: "100vh" }} className="app-container">
+      <Header/>
       <Utility
         vFlexCol
         vPadding={32}
@@ -53,20 +53,26 @@ export function AppPage() {
           minHeight: "calc(100vh - 80px)",
           background: "linear-gradient(to bottom right, #eff6ff, #ffffff, #eef2ff)",
         }}
+        className="main-content"
       >
-        <Utility vFlexCol vAlignItems="center" vRowGap={12}>
+        <Utility vFlexCol vAlignItems="center" vRowGap={12} className="hero-section">
           <Utility vFlex vAlignItems="center" vRowGap={4}>
-            <Typography variant="display-2" colorScheme="active">
+            <Typography variant="display-2" colorScheme="active" className="main-title">
               Visa Design System AI
             </Typography>
           </Utility>
-          <Typography variant="subtitle-2" colorScheme="subtle" style={{ maxWidth: 600, textAlign: "center" }}>
+          <Typography
+            variant="subtitle-2"
+            colorScheme="subtle"
+            style={{ maxWidth: 600, textAlign: "center" }}
+            className="subtitle"
+          >
             Describe your UI in natural language and get instant component suggestions with ready-to-use code
           </Typography>
         </Utility>
 
         {/* Input Card */}
-        <Utility vPaddingLeft={48} vPaddingRight={48} vMarginTop={40}>
+        <Utility vPaddingLeft={48} vPaddingRight={48} vMarginTop={40} className="input-section">
           <Card>
             <CardBody>
               <Utility vFlex vFlexCol vRowGap={8}>
@@ -93,6 +99,7 @@ export function AppPage() {
                         width: "100%",
                         boxSizing: "border-box",
                       }}
+                      className="query-input"
                     />
                     <GenericSearchLow
                       aria-hidden
@@ -108,8 +115,8 @@ export function AppPage() {
                     />
                   </Utility>
                 </InputContainer>
-                <Utility vFlex vJustifyContent="between" vAlignItems="center" vMarginTop={8}>
-                  <Typography variant="label">
+                <Utility vFlex vJustifyContent="between" vAlignItems="center" vMarginTop={8} className="input-footer">
+                  <Typography variant="label" className="keyboard-hint">
                     Press <Badge badgeType="subtle">Cmd+Enter</Badge> to generate
                   </Typography>
                   <Button
@@ -118,10 +125,11 @@ export function AppPage() {
                     iconTwoColor
                     buttonSize="large"
                     style={{
-                        padding: "16px 32px",
-                        fontSize: "1.1rem",
-                        background: "linear-gradient(to right, #2563eb, #4f46e5)",
-                      }}
+                      padding: "16px 32px",
+                      fontSize: "1.1rem",
+                      background: "linear-gradient(to right, #2563eb, #4f46e5)",
+                    }}
+                    className="generate-button"
                   >
                     {isLoading ? (
                       <>
@@ -149,6 +157,7 @@ export function AppPage() {
           vMarginRight={48}
           vMarginTop={40}
           style={{ display: "flex", flexDirection: "row", gap: 32 }}
+          className="main-grid"
         >
           {/* Left Column */}
           <Utility
@@ -158,6 +167,7 @@ export function AppPage() {
               flexBasis: "70%",
               maxWidth: "70%",
             }}
+            className="left-column"
           >
             {suggestions ? (
               <>
@@ -183,18 +193,33 @@ export function AppPage() {
                         vFlexCol
                         vGap={10}
                         vMarginTop={12}
+                        className="suggestions-container"
                       >
                         {suggestions.components.map((component: any, index: number) => (
-                    <Utility key={index} vFlexCol vGap={2}>
-                      <Surface style={{ border: "1px solid var(--palette-default-border)", borderRadius: "12px", overflow: "hidden", padding: "1.2rem" }}>
-                        <Utility vFlex vJustifyContent="between" vAlignItems="center" vMarginBottom={4}>
-                          <Typography variant="headline-4">{component.name}</Typography>
-                          <Utility
-                                as="button"
+                          <Utility key={index} vFlexCol vGap={2}>
+                            <Surface
+                              style={{
+                                border: "1px solid var(--palette-default-border)",
+                                borderRadius: "12px",
+                                overflow: "hidden",
+                                padding: "1.2rem",
+                              }}
+                              className="component-card"
+                            >
+                              <Utility
                                 vFlex
+                                vJustifyContent="between"
                                 vAlignItems="center"
-                                vGap={2}
-                                style={{
+                                vMarginBottom={4}
+                                className="component-header"
+                              >
+                                <Typography variant="headline-4">{component.name}</Typography>
+                                <Utility
+                                  as="button"
+                                  vFlex
+                                  vAlignItems="center"
+                                  vGap={2}
+                                  style={{
                                     cursor: "pointer",
                                     background: "transparent",
                                     border: "none",
@@ -202,31 +227,31 @@ export function AppPage() {
                                     padding: "4px 8px",
                                     borderRadius: 6,
                                     color: copiedComponentIndex === index ? "#16a34a" : "#2563eb",
-                                }}
-                                onClick={() => handleComponentCopy(component.code, index)}
+                                  }}
+                                  onClick={() => handleComponentCopy(component.code, index)}
+                                  className="copy-button"
                                 >
-                                {copiedComponentIndex === index ? (
+                                  {copiedComponentIndex === index ? (
                                     <>
-                                    <span>Copied!</span>
+                                      <span>Copied!</span>
                                     </>
-                                ) : (
+                                  ) : (
                                     <>
-                                    <VisaCopyLow style={{ width: 16, height: 16 }} />
-                                    <CardDescription colorScheme="active">Copy Component</CardDescription>
+                                      <VisaCopyLow style={{ width: 16, height: 16 }} />
+                                      <CardDescription colorScheme="active">Copy</CardDescription>
                                     </>
-                                )}
+                                  )}
                                 </Utility>
-
-                        </Utility>
-                        <Typography variant="body-3" colorScheme="subtle">
-                          {component.description}
-                        </Typography>
-                        <Utility vFlex vFlexWrap vGap={8} vColGap={8} vMarginTop={12}>
-                          {component.props.map((prop: string, propIndex: number) => (
-                            <Chip key={propIndex} tag="label" readOnly>
-                              {prop}
-                            </Chip>
-                          ))}
+                              </Utility>
+                              <Typography variant="body-3" colorScheme="subtle">
+                                {component.description}
+                              </Typography>
+                              <Utility vFlex vFlexWrap vGap={8} vColGap={8} vMarginTop={12}>
+                                {component.props.map((prop: string, propIndex: number) => (
+                                  <Chip key={propIndex} tag="label" readOnly>
+                                    {prop}
+                                  </Chip>
+                                ))}
                               </Utility>
                             </Surface>
                           </Utility>
@@ -241,7 +266,7 @@ export function AppPage() {
                   <Card style={{ background: "rgba(255, 255, 255, 0.8)", backdropFilter: "blur(8px)" }}>
                     <CardBody>
                       <Utility vFlex vFlexCol vGap={4}>
-                        <Utility vFlex vAlignItems="center" vJustifyContent="between">
+                        <Utility vFlex vAlignItems="center" vJustifyContent="between" className="code-header">
                           <Utility vFlex vAlignItems="center" vGap={6}>
                             <VisaCodeSnippetLow style={{ color: "var(--palette-success-default)" }} />
                             <Typography variant="headline-3">Generated Code</Typography>
@@ -267,6 +292,7 @@ export function AppPage() {
                               setCopied(true)
                               setTimeout(() => setCopied(false), 5000)
                             }}
+                            className="copy-code-button"
                           >
                             {copied ? (
                               <>
@@ -293,6 +319,7 @@ export function AppPage() {
                               fontSize: "0.875rem",
                               fontFamily: 'Menlo, Monaco, "Courier New"',
                             }}
+                            className="code-block"
                           >
                             <code style={{ whiteSpace: "pre" }}>{suggestions.code}</code>
                           </Surface>
@@ -325,7 +352,7 @@ export function AppPage() {
                         ].map(({ step, title, desc }) => (
                           <Utility key={step} vFlex vFlexRow vAlignItems="start" vGap={12}>
                             <Utility>
-                              <Typography variant="body-2">{step}</Typography>
+                              <Typography variant="body-2" colorScheme="active">{step}</Typography>
                             </Utility>
                             <Utility vFlex vFlexCol vGap={4}>
                               <Typography variant="body-2">{title}</Typography>
@@ -373,7 +400,7 @@ export function AppPage() {
           </Utility>
 
           {/* Right - Sidebar */}
-          <Utility vFlex vFlexCol vGap={24} style={{ flex: 1 }}>
+          <Utility vFlex vFlexCol vGap={24} style={{ flex: 1 }} className="right-sidebar">
             {suggestions && recentQueries.length > 0 && (
               <RecentQueries queries={recentQueries} onSelectQuery={setQuery} />
             )}
@@ -388,14 +415,30 @@ export function AppPage() {
                     "Navigation header with user menu",
                     "Data table with sorting and pagination",
                   ].map((example, index) => (
-                    <Button key={index} onClick={() => setQuery(example)}
-                    style={{
-                      padding: "16px 32px",
-                      fontSize: "1.1rem",
-                      background: "#d1d5db",
-                      color: "#1f2937"
-                    }}>
-                        <Typography variant="button-medium">{example}</Typography>
+                    <Button
+                      key={index}
+                      onClick={() => setQuery(example)}
+                      style={{
+                        padding: "16px 32px",
+                        fontSize: "1.1rem",
+                        backgroundColor: "transparent",
+                        color: "#1f2937",
+                        border: "1px solid #d1d5db", // Tailwind's gray-300
+                        borderRadius: "8px",
+                        transition: "background-color 0.2s ease, border-color 0.2s ease",
+                      }}
+                      onMouseEnter={(e) => {
+                        const btn = e.currentTarget as HTMLButtonElement;
+                        btn.style.backgroundColor = "#e5e7eb"; // gray-200
+                        btn.style.borderColor = "#d1d5db"; // keep border consistent
+                      }}
+                      onMouseLeave={(e) => {
+                        const btn = e.currentTarget as HTMLButtonElement;
+                        btn.style.backgroundColor = "transparent";
+                        btn.style.borderColor = "#d1d5db";
+                      }}
+                    >
+                      <Typography variant="button-medium">{example}</Typography>
                     </Button>
                   ))}
                 </Utility>
@@ -406,17 +449,28 @@ export function AppPage() {
                 <Typography variant="headline-3">Tips for Better Results</Typography>
                 <Utility vFlex vFlexCol vGap={6} vMarginTop={12}>
                   {[
-                    "1. Be specific about the component type (form, card, button, etc.)",
-                    "2. Mention key features like 'responsive', 'with validation', 'sortable'",
-                    "3. Include interaction states like 'hover', 'disabled', 'loading'",
-                  ].map((tip, index) => (
-                    <Utility key={index} vFlex vFlexRow vGap={6}>
+                    {
+                      num: "1.",
+                      tip: "Be specific about the component type (form, card, button, etc.)",
+                    },
+                    {
+                      num: "2.",
+                      tip: "Mention key features like 'responsive', 'with validation', 'sortable'",
+                    },
+                    {
+                      num: "3.",
+                      tip: "Include interaction states like 'hover', 'disabled', 'loading'",
+                    },
+                  ].map(({ num, tip }, index) => (
+                    <Utility key={index} vFlex vFlexRow vGap={12}>
+                      <Typography variant="body-2" colorScheme="active">{num}</Typography>
                       <Typography variant="body-2">{tip}</Typography>
                     </Utility>
                   ))}
                 </Utility>
               </CardBody>
             </Card>
+
           </Utility>
         </Utility>
       </Utility>

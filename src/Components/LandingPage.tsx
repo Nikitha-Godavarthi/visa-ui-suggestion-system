@@ -1,5 +1,4 @@
 "use client"
-
 import { Typography, Button, Utility, Surface } from "@visa/nova-react"
 import { Sparkles, Code, Zap, Palette } from "lucide-react"
 import { Header } from "@/Components/Header"
@@ -12,7 +11,6 @@ export function LandingPage({ onGetStarted }: LandingPageProps) {
   return (
     <Utility>
       <Header showGetStarted onGetStarted={onGetStarted} />
-
       <Utility
         vFlexCol
         vPadding={16}
@@ -22,7 +20,13 @@ export function LandingPage({ onGetStarted }: LandingPageProps) {
         }}
       >
         {/* Hero Section */}
-        <Utility vFlexCol vAlignItems="center" vJustifyContent="center" vRowGap={24} style={{ minHeight: "50vh" }}>
+        <Utility
+          vFlexCol
+          vAlignItems="center"
+          vJustifyContent="center"
+          vRowGap={24}
+          style={{ minHeight: "50vh" }}
+        >
           <Utility vFlexCol vAlignItems="center" vRowGap={12}>
             <Typography
               variant="display-1"
@@ -35,7 +39,6 @@ export function LandingPage({ onGetStarted }: LandingPageProps) {
             >
               Build Faster with VISA Design System AI
             </Typography>
-
             <Typography
               variant="subtitle-1"
               colorScheme="subtle"
@@ -50,7 +53,6 @@ export function LandingPage({ onGetStarted }: LandingPageProps) {
               VISA Design System
             </Typography>
           </Utility>
-
           <Utility vFlex vColGap={16} style={{ flexWrap: "wrap", justifyContent: "center" }}>
             <Button
               onClick={onGetStarted}
@@ -68,11 +70,10 @@ export function LandingPage({ onGetStarted }: LandingPageProps) {
         </Utility>
 
         {/* Features Section */}
-        <Utility vFlexCol vAlignItems="center" vRowGap={32} vPaddingBottom={48}>
+        <Utility vFlexCol vAlignItems="center" vRowGap={32} vPaddingBottom={48} className="features-section">
           <Typography variant="headline-3" colorScheme="active" style={{ textAlign: "center" }}>
             Why Choose VISA Design System AI?
           </Typography>
-
           <Utility
             vFlex
             vRowGap={24}
