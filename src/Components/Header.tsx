@@ -1,18 +1,33 @@
 "use client"
 
-import { Button, Link, Nav, NavAppName, Typography, Utility, UtilityFragment, VisaLogo } from "@visa/nova-react"
+import {
+  Button,
+  Link,
+  Nav,
+  NavAppName,
+  Typography,
+  Utility,
+  UtilityFragment,
+  VisaLogo,
+} from "@visa/nova-react"
 
 interface HeaderProps {
   showGetStarted?: boolean
   onGetStarted?: () => void
+  onGoHome?: () => void
 }
 
-export function Header({ showGetStarted = false, onGetStarted }: HeaderProps) {
+export function Header({ showGetStarted = false, onGetStarted, onGoHome }: HeaderProps) {
   return (
     <UtilityFragment vJustifyContent="between">
       <Nav orientation="horizontal" tag="header">
         <UtilityFragment vFlex vGap={16}>
-          <Link aria-label="Visa Design System Home" href="/" noUnderline style={{ backgroundColor: "transparent" }}>
+          <Link
+            aria-label="Visa Design System Home"
+            onClick={onGoHome}
+            noUnderline
+            style={{ backgroundColor: "transparent", cursor: "pointer" }}
+          >
             <VisaLogo />
             <NavAppName>
               <Typography variant="headline-3">Design System</Typography>

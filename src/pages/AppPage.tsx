@@ -32,7 +32,7 @@ const RECENT_QUERY_KEY = "recentQueries";
 
 
 
-export function AppPage() {
+export function AppPage({ onGoHome }: { onGoHome: () => void }) {
   const [query, setQuery] = useState("")
   const [isFocused, setIsFocused] = useState(false)
   const [suggestions, setSuggestions] = useState<any>(null)
@@ -87,7 +87,7 @@ export function AppPage() {
       boxShadow: "0 2px 4px rgba(0,0,0,0.05)",
     }}
   >
-    <Header />
+    <Header showGetStarted={false} onGoHome={onGoHome} />
   </div>
       <Utility
         vFlexCol
