@@ -58,43 +58,45 @@ export function AppPage() {
       left: 0,
       right: 0,
       zIndex: 1000,
-      backgroundColor: "white", // Optional: match theme
-      boxShadow: "0 2px 4px rgba(0,0,0,0.05)", // Optional: subtle shadow
+      backgroundColor: "white",
+      boxShadow: "0 2px 4px rgba(0,0,0,0.05)",
     }}
   >
     <Header />
   </div>
       <Utility
-        vMarginTop={48}
         vFlexCol
-        vPadding={32}
+        vPadding={48}
         style={{
-          minHeight: "calc(100vh)",
+          minHeight: "100vh",
+          paddingTop: "80px",
           background: "linear-gradient(to bottom right, #eff6ff, #ffffff, #eef2ff)",
+          width: "100%",
+          boxSizing: "border-box",
+          alignContent:"center",
+          alignItems:"center",
         }}
       >
-        <Utility vFlexCol vAlignItems="center" vRowGap={12} vMarginTop={32}>
-          <Utility vFlex vAlignItems="center" vRowGap={4}>
-            <Typography variant="display-2" colorScheme="active">
-              Visa Design System AI
-            </Typography>
-          </Utility>
+        <Utility vFlexCol vAlignItems="center" vRowGap={12} vMarginTop={30} vPaddingLeft={30} vPaddingRight={30}>
+          <Typography variant="display-2" colorScheme="active" style={{ maxWidth: "100%", textAlign: "center" }}>
+            Visa Design System AI
+          </Typography>
           <Typography
             variant="subtitle-2"
             colorScheme="subtle"
-            style={{ maxWidth: 600, textAlign: "center" }}
+            style={{ maxWidth: "90%", textAlign: "center" }}
           >
             Describe your UI in natural language and get instant component suggestions with ready-to-use code
           </Typography>
         </Utility>
 
         {/* Input Card */}
-        <Utility vPaddingLeft={48} vPaddingRight={48} vMarginTop={40}>
-          <Card>
+        <Utility style={{ width: "100%", boxSizing: "border-box" }} vMarginTop={32} vPaddingLeft={30} vPaddingRight={30}>
+          <Card style={{ width: "100%" }}>
             <CardBody>
               <Utility vFlex vFlexCol vRowGap={8}>
                 <Utility vFlex vAlignItems="center" vColGap={6}>
-                  <VisaIdeaLow/>
+                  <VisaIdeaLow />
                   <Typography variant="headline-3">Describe Your Component</Typography>
                 </Utility>
                 <CardDescription>Tell us what you want to build.</CardDescription>
@@ -112,7 +114,7 @@ export function AppPage() {
                       style={{
                         paddingRight: "2.5rem",
                         height: "3rem",
-                        fontSize: "1rem",
+                        fontSize: "clamp(1rem, 2vw, 1.2rem)",
                         width: "100%",
                         boxSizing: "border-box",
                       }}
@@ -131,7 +133,7 @@ export function AppPage() {
                     />
                   </Utility>
                 </InputContainer>
-                <Utility vFlex vJustifyContent="between" vAlignItems="center" vMarginTop={8}>
+                <Utility vFlex vJustifyContent="between" vAlignItems="center" vMarginTop={8} style={{ flexWrap: "wrap", gap: 12 }}>
                   <Typography variant="label">
                     Press <Badge badgeType="subtle">Cmd+Enter</Badge> to generate
                   </Typography>
@@ -141,21 +143,12 @@ export function AppPage() {
                     iconTwoColor
                     buttonSize="large"
                     style={{
-                      padding: "16px 32px",
-                      fontSize: "1.1rem",
+                      padding: "clamp(12px, 2vw, 16px) clamp(20px, 4vw, 32px)",
+                      fontSize: "clamp(1rem, 2vw, 1.1rem)",
                       background: "linear-gradient(to right, #2563eb, #4f46e5)",
                     }}
                   >
-                    {isLoading ? (
-                      <>
-                        Generating...
-                      </>
-                    ) : (
-                      <>
-                        <Sparkles/>
-                        Generate Components
-                      </>
-                    )}
+                    {isLoading ? "Generating..." : <><Sparkles /> Generate Components</>}
                   </Button>
                 </Utility>
               </Utility>
@@ -164,21 +157,22 @@ export function AppPage() {
         </Utility>
 
         {/* Main Grid */}
-        <Utility
-          vFlex
-          vColGap={32}
-          vMarginLeft={48}
-          vMarginRight={48}
-          vMarginTop={40}
-          style={{ display: "flex", flexDirection: "row", gap: 32 }}
+        <Utility vPaddingLeft={30} vPaddingRight={30}
+          style={{
+            display: "flex",
+            flexWrap: "wrap",
+            gap: 32,
+            marginTop: 40,
+            width: "100%",
+            boxSizing: "border-box",
+          }}
         >
           {/* Left Column */}
           <Utility
-            vFlex
-            vFlexCol
             style={{
-              flexBasis: "70%",
-              maxWidth: "70%",
+              flex: "1 1 60%",
+              minWidth: "300px",
+              boxSizing: "border-box",
             }}
           >
             {suggestions ? (
@@ -388,8 +382,8 @@ export function AppPage() {
             ) : (
               <Card style={{ background: "rgba(255, 255, 255, 0.8)", backdropFilter: "blur(8px)" }}>
                 <CardBody>
-                  <Utility vFlex vFlexCol vAlignItems="center" vGap={12} vPaddingTop={20} vPaddingBottom={20}>
-                    <VisaCodeSnippetLow style={{ width: 40, height: 40, color: "var(--palette-default-icon)" }} />
+                  <Utility vFlex vFlexCol vAlignItems="center" vGap={12} vPaddingTop={10} vPaddingBottom={10}>
+                    <VisaCodeSnippetLow style={{ width: 30, height: 30, color: "var(--palette-default-icon)" }} />
                     <Typography variant="headline-3" style={{ color: "var(--palette-default-text-primary)" }}>
                       Ready to Generate
                     </Typography>
@@ -406,10 +400,11 @@ export function AppPage() {
           </Utility>
 
           {/* Right - Sidebar */}
-          <Utility vFlex vFlexCol vGap={24} style={{ flex: 1 }}>
+          <Utility style={{ flex: "1 1 300px", minWidth: "280px", maxWidth: "100%"}}>
             {suggestions && recentQueries.length > 0 && (
               <RecentQueries queries={recentQueries} onSelectQuery={setQuery} />
             )}
+            <Utility vMarginBottom={24}>
             <Card>
               <CardBody>
                 <Typography variant="headline-3">Example Queries</Typography>
@@ -425,12 +420,15 @@ export function AppPage() {
                       key={index}
                       onClick={() => setQuery(example)}
                       style={{
-                        padding: "16px 32px",
+                        padding: "16px 16px",
                         fontSize: "1.1rem",
                         backgroundColor: "transparent",
                         color: "#1f2937",
-                        border: "1px solid #d1d5db", // Tailwind's gray-300
+                        border: "1px solid #d1d5db",
                         borderRadius: "8px",
+                        whiteSpace: "normal",
+                        wordBreak: "break-word",
+                        textAlign: "left",
                         transition: "background-color 0.2s ease, border-color 0.2s ease",
                       }}
                       onMouseEnter={(e) => {
@@ -450,6 +448,7 @@ export function AppPage() {
                 </Utility>
               </CardBody>
             </Card>
+            </Utility>
             <Card>
               <CardBody>
                 <Typography variant="headline-3">Tips for Better Results</Typography>

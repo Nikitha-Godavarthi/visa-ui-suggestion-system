@@ -13,6 +13,7 @@ export function RecentQueries({ queries, onSelectQuery }: RecentQueriesProps) {
   if (queries.length === 0) return null
 
   return (
+    <Utility vMarginBottom={24}>
     <Card>
       <Utility vFlexCol vGap={4} vPadding={20}>
         <Utility vFlex vAlignItems="center" vColGap={6}>
@@ -58,5 +59,6 @@ export function RecentQueries({ queries, onSelectQuery }: RecentQueriesProps) {
         </Utility>
       </Utility>
     </Card>
+    </Utility>
   )
 }
