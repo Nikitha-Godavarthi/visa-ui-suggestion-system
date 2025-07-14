@@ -2,14 +2,13 @@
 import type React from "react"
 import { useState } from "react"
 import { Typography, Button, Input, InputContainer, Utility, Badge, Surface, Chip } from "@visa/nova-react"
-import { VisaIdeaTiny, VisaCodeSnippetLow, VisaCopyLow, GenericSearchLow } from "@visa/nova-icons-react"
+import { VisaIdeaLow, VisaCodeSnippetLow, VisaCopyLow, GenericSearchLow } from "@visa/nova-icons-react"
 import { toast } from "sonner"
 import { Sparkles } from "lucide-react"
-import { ComponentSuggester } from "@/Components/component-suggester"
 import { RecentQueries } from "@/Components/recent-queries"
 import { Header } from "@/Components/Header"
 import { Card, CardBody, CardDescription } from "@/Components/UI/card"
-
+import { fetchSuggestions } from "@/API/suggest";
 
 export function AppPage() {
   const [query, setQuery] = useState("")
@@ -21,14 +20,21 @@ export function AppPage() {
   const [copiedComponentIndex, setCopiedComponentIndex] = useState<number | null>(null)
 
   const handleSuggest = async () => {
-    if (!query.trim()) return
-    setIsLoading(true)
-    await new Promise((resolve) => setTimeout(resolve, 800))
-    const result = ComponentSuggester.suggest(query)
-    setSuggestions(result)
-    setRecentQueries([query, ...recentQueries.filter((q) => q !== query)].slice(0, 5))
-    setIsLoading(false)
-  }
+    if (!query.trim()) return;
+  
+    setIsLoading(true);
+  
+    try {
+      const result = await fetchSuggestions(query);
+      setSuggestions(result);
+      setRecentQueries([query, ...recentQueries.filter((q) => q !== query)].slice(0, 5));
+    } catch (error) {
+      console.error("Suggestion error:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+  
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
     if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) {
@@ -44,20 +50,32 @@ export function AppPage() {
   }
 
   return (
-    <div style={{ minHeight: "100vh" }} className="app-container">
-      <Header/>
+    <div style={{ minHeight: "100vh" }}>
+      <div
+    style={{
+      position: "fixed",
+      top: 0,
+      left: 0,
+      right: 0,
+      zIndex: 1000,
+      backgroundColor: "white", // Optional: match theme
+      boxShadow: "0 2px 4px rgba(0,0,0,0.05)", // Optional: subtle shadow
+    }}
+  >
+    <Header />
+  </div>
       <Utility
+        vMarginTop={48}
         vFlexCol
         vPadding={32}
         style={{
-          minHeight: "calc(100vh - 80px)",
+          minHeight: "calc(100vh)",
           background: "linear-gradient(to bottom right, #eff6ff, #ffffff, #eef2ff)",
         }}
-        className="main-content"
       >
-        <Utility vFlexCol vAlignItems="center" vRowGap={12} className="hero-section">
+        <Utility vFlexCol vAlignItems="center" vRowGap={12} vMarginTop={32}>
           <Utility vFlex vAlignItems="center" vRowGap={4}>
-            <Typography variant="display-2" colorScheme="active" className="main-title">
+            <Typography variant="display-2" colorScheme="active">
               Visa Design System AI
             </Typography>
           </Utility>
@@ -65,19 +83,18 @@ export function AppPage() {
             variant="subtitle-2"
             colorScheme="subtle"
             style={{ maxWidth: 600, textAlign: "center" }}
-            className="subtitle"
           >
             Describe your UI in natural language and get instant component suggestions with ready-to-use code
           </Typography>
         </Utility>
 
         {/* Input Card */}
-        <Utility vPaddingLeft={48} vPaddingRight={48} vMarginTop={40} className="input-section">
+        <Utility vPaddingLeft={48} vPaddingRight={48} vMarginTop={40}>
           <Card>
             <CardBody>
               <Utility vFlex vFlexCol vRowGap={8}>
                 <Utility vFlex vAlignItems="center" vColGap={6}>
-                  <VisaIdeaTiny className="w-5 h-5 text-blue-600" />
+                  <VisaIdeaLow/>
                   <Typography variant="headline-3">Describe Your Component</Typography>
                 </Utility>
                 <CardDescription>Tell us what you want to build.</CardDescription>
@@ -99,7 +116,6 @@ export function AppPage() {
                         width: "100%",
                         boxSizing: "border-box",
                       }}
-                      className="query-input"
                     />
                     <GenericSearchLow
                       aria-hidden
@@ -115,8 +131,8 @@ export function AppPage() {
                     />
                   </Utility>
                 </InputContainer>
-                <Utility vFlex vJustifyContent="between" vAlignItems="center" vMarginTop={8} className="input-footer">
-                  <Typography variant="label" className="keyboard-hint">
+                <Utility vFlex vJustifyContent="between" vAlignItems="center" vMarginTop={8}>
+                  <Typography variant="label">
                     Press <Badge badgeType="subtle">Cmd+Enter</Badge> to generate
                   </Typography>
                   <Button
@@ -129,16 +145,14 @@ export function AppPage() {
                       fontSize: "1.1rem",
                       background: "linear-gradient(to right, #2563eb, #4f46e5)",
                     }}
-                    className="generate-button"
                   >
                     {isLoading ? (
                       <>
-                        <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2" />
                         Generating...
                       </>
                     ) : (
                       <>
-                        <Sparkles className="w-4 h-4 mr-2" />
+                        <Sparkles/>
                         Generate Components
                       </>
                     )}
@@ -157,7 +171,6 @@ export function AppPage() {
           vMarginRight={48}
           vMarginTop={40}
           style={{ display: "flex", flexDirection: "row", gap: 32 }}
-          className="main-grid"
         >
           {/* Left Column */}
           <Utility
@@ -167,7 +180,6 @@ export function AppPage() {
               flexBasis: "70%",
               maxWidth: "70%",
             }}
-            className="left-column"
           >
             {suggestions ? (
               <>
@@ -193,7 +205,6 @@ export function AppPage() {
                         vFlexCol
                         vGap={10}
                         vMarginTop={12}
-                        className="suggestions-container"
                       >
                         {suggestions.components.map((component: any, index: number) => (
                           <Utility key={index} vFlexCol vGap={2}>
@@ -204,14 +215,12 @@ export function AppPage() {
                                 overflow: "hidden",
                                 padding: "1.2rem",
                               }}
-                              className="component-card"
                             >
                               <Utility
                                 vFlex
                                 vJustifyContent="between"
                                 vAlignItems="center"
                                 vMarginBottom={4}
-                                className="component-header"
                               >
                                 <Typography variant="headline-4">{component.name}</Typography>
                                 <Utility
@@ -229,7 +238,6 @@ export function AppPage() {
                                     color: copiedComponentIndex === index ? "#16a34a" : "#2563eb",
                                   }}
                                   onClick={() => handleComponentCopy(component.code, index)}
-                                  className="copy-button"
                                 >
                                   {copiedComponentIndex === index ? (
                                     <>
@@ -266,7 +274,7 @@ export function AppPage() {
                   <Card style={{ background: "rgba(255, 255, 255, 0.8)", backdropFilter: "blur(8px)" }}>
                     <CardBody>
                       <Utility vFlex vFlexCol vGap={4}>
-                        <Utility vFlex vAlignItems="center" vJustifyContent="between" className="code-header">
+                        <Utility vFlex vAlignItems="center" vJustifyContent="between">
                           <Utility vFlex vAlignItems="center" vGap={6}>
                             <VisaCodeSnippetLow style={{ color: "var(--palette-success-default)" }} />
                             <Typography variant="headline-3">Generated Code</Typography>
@@ -292,7 +300,6 @@ export function AppPage() {
                               setCopied(true)
                               setTimeout(() => setCopied(false), 5000)
                             }}
-                            className="copy-code-button"
                           >
                             {copied ? (
                               <>
@@ -319,7 +326,6 @@ export function AppPage() {
                               fontSize: "0.875rem",
                               fontFamily: 'Menlo, Monaco, "Courier New"',
                             }}
-                            className="code-block"
                           >
                             <code style={{ whiteSpace: "pre" }}>{suggestions.code}</code>
                           </Surface>
@@ -400,7 +406,7 @@ export function AppPage() {
           </Utility>
 
           {/* Right - Sidebar */}
-          <Utility vFlex vFlexCol vGap={24} style={{ flex: 1 }} className="right-sidebar">
+          <Utility vFlex vFlexCol vGap={24} style={{ flex: 1 }}>
             {suggestions && recentQueries.length > 0 && (
               <RecentQueries queries={recentQueries} onSelectQuery={setQuery} />
             )}

@@ -13,7 +13,7 @@ export function RecentQueries({ queries, onSelectQuery }: RecentQueriesProps) {
   if (queries.length === 0) return null
 
   return (
-    <Card className="shadow-lg border-0 bg-white/80 backdrop-blur-sm">
+    <Card>
       <Utility vFlexCol vGap={4} vPadding={20}>
         <Utility vFlex vAlignItems="center" vColGap={6}>
           <VisaTimeTiny/>

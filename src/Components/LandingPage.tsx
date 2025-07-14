@@ -10,9 +10,22 @@ interface LandingPageProps {
 export function LandingPage({ onGetStarted }: LandingPageProps) {
   return (
     <Utility>
+      <div style={{
+      position: "fixed",
+      top: 0,
+      left: 0,
+      right: 0,
+      zIndex: 1000,
+      backgroundColor: "white", // Optional: match theme
+      boxShadow: "0 2px 4px rgba(0,0,0,0.05)", // Optional: subtle shadow
+    }}
+  >
       <Header showGetStarted onGetStarted={onGetStarted} />
+
+      </div>
       <Utility
         vFlexCol
+        vMarginTop={48}
         vPadding={16}
         style={{
           minHeight: "calc(100vh - 80px)",
@@ -70,7 +83,7 @@ export function LandingPage({ onGetStarted }: LandingPageProps) {
         </Utility>
 
         {/* Features Section */}
-        <Utility vFlexCol vAlignItems="center" vRowGap={32} vPaddingBottom={48} className="features-section">
+        <Utility vFlexCol vAlignItems="center" vRowGap={32} vPaddingBottom={48}>
           <Typography variant="headline-3" colorScheme="active" style={{ textAlign: "center" }}>
             Why Choose VISA Design System AI?
           </Typography>

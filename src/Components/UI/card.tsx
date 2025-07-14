@@ -17,12 +17,10 @@ export function Card(props: React.ComponentProps<typeof ContentCard>) {
 
 export function CardBody({
   children,
-  className,
-  ...props
 }: React.ComponentProps<typeof ContentCardBody>) {
   return (
     <Utility vFlex vFlexCol vGap={4}>
-      <ContentCardBody className={className} {...props}>
+      <ContentCardBody>
         {children}
       </ContentCardBody>
     </Utility>
