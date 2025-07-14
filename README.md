@@ -1,13 +1,22 @@
-# 💡 Visa Design System – Natural Language → Component Suggestion Tool
+# Visa Design System – Natural Language → Component Suggestion Tool
 
 This is a web application that lets developers describe UI components in natural language and receive:
 
-- 🧩 Suggested components from the **Visa Product Design System**.
-- 💻 Ready-to-use React code snippets using Visa Nova components.
+- Suggested components from the **Visa Product Design System**.
+- Ready-to-use React code snippets using Visa Nova components.
 
 ---
 
-## 🛠️ Approach & Technical Choices
+## Features Implemented
+
+- Designed and built a real-time UI suggestion tool that returns tailored component code snippets based on natural language input.
+- Hardcoded the Component suggestion logic and generated code logic into the backend.
+- Integrated “Copy to Clipboard” functionality for both suggested components and full code output, enhancing user efficiency.
+- Persisted user interactions by storing and displaying recent search queries using browser localStorage.
+
+---
+
+## Approach & Technical Choices
 
 - **Frontend**: Vite + React + TypeScript + Visa Nova Design System.
 - **Backend**: Express.js with a lightweight REST API.
@@ -18,30 +27,30 @@ This is a web application that lets developers describe UI components in natural
 
 ## ⚙️ Assumptions & Shortcuts
 
-- 🔍 **No real AI model** – all logic is manually hardcoded via keyword matching.
-- 🧠 **Recent queries are stored in memory only**, not persisted.
-- 📦 **Only a subset** of commonly-used Nova components are included for suggestions.
+- **No real AI model** – all logic is manually hardcoded via keyword matching.
+- **Recent queries are stored in memory only**, not persisted.
+- **Only a subset** of commonly-used Nova components are included for suggestions.
 
 ---
 
-## 🚀 Improvements With More Time
+## Improvements With More Time
 
-- 🤖 Integrate a lightweight NLP/LLM backend for smarter intent understanding.
-- 🧱 Add real-time live preview of suggested components.
-- 📝 Enable saving snippets to a database.
-- 🌐 Expand component database and support theme switching.
-- ♿ Conduct full WCAG 2.1 + VGAR accessibility audit.
+- Integrate a lightweight NLP/LLM backend for smarter intent understanding.
+- Add real-time live preview of suggested components.
+- Enable saving snippets to a database.
+- Expand component database and support theme switching.
+- Conduct full WCAG 2.1 + VGAR accessibility audit.
 
 ---
 
-## 🤖 AI Usage
+## AI Usage
 
 - ChatGPT was used to brainstorm features, refine UI copy, and assist in drafting rule-based logic. All application logic and integration were developed and customized manually.
 - Leveraged AI suggestions for component organization, React hook patterns, and state management approaches.
 
 ---
 
-## 🔗 Deployment
+## Deployment
 
 A live version of the app is deployed at: [https://visa-ui-suggestion-system.vercel.app](https://visa-ui-suggestion-system.vercel.app)
 

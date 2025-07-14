@@ -5,7 +5,7 @@ import { Typography, Button, Input, InputContainer, Utility, Badge, Surface, Chi
 import { VisaIdeaLow, VisaCodeSnippetLow, VisaCopyLow, GenericSearchLow } from "@visa/nova-icons-react"
 import { toast } from "sonner"
 import { Sparkles } from "lucide-react"
-import { RecentQueries } from "@/Components/recent-queries"
+import { RecentQueries } from "@/Components/RecentQueries"
 import { Header } from "@/Components/Header"
 import { Card, CardBody, CardDescription } from "@/Components/UI/card"
 import { fetchSuggestions } from "@/API/suggest";

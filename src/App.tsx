@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { LandingPage } from "@/Components/LandingPage"
+import { LandingPage } from "@/pages/LandingPage"
 import { AppPage } from "./pages/AppPage"
 
 type CurrentPage = "landing" | "app"
