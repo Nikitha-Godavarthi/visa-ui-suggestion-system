@@ -1,31 +1,50 @@
-Visa Design System – Natural Language → Component Suggestion Tool
+# 💡 Visa Design System – Natural Language → Component Suggestion Tool
 
-A web app that allows developers to describe UI components in natural language and receive intelligent suggestions of Visa Design System components along with ready-to-use code snippets.
+This is a web application that lets developers describe UI components in natural language and receive:
 
-🛠️ Approach & Technical Choices
+- 🧩 Suggested components from the **Visa Product Design System**
+- 💻 Ready-to-use React code snippets using Visa Nova components
 
-Frontend: Built with React + TypeScript + Vite, using Visa Nova Design System components for consistent UI and theming.
-Backend: Lightweight Express.js API with hardcoded rule-based logic for component suggestion and code generation.
-Component Matching: User input is matched using keyword heuristics (e.g., "login", "pagination") to return relevant components and JSX snippets.
-Key Features:
-Query input with keyboard shortcut (Cmd/Ctrl + Enter)
-Suggestion list with descriptions, props, and “Copy” buttons
-Auto-generated code preview section with copy functionality
-Sidebar with recent and sample queries
-Onboarding tour for first-time users
-⚙️ Assumptions & Shortcuts
+---
 
-No real AI or LLM: All suggestions are derived from keyword-based matching rather than semantic parsing.
-Stateless backend: Recent queries are stored in-memory only (resets on server restart).
-Limited component coverage: Only a predefined subset of commonly-used Nova components are included for suggestions.
-Design System docs: Assumed all component variants, styles, and behavior align with Visa Nova defaults.
-🚀 What I'd Improve With More Time
+## 🛠️ Approach & Technical Choices
 
-Implement semantic understanding (e.g., embedding model or LLM integration).
-Add support for component composition previews or live sandbox.
-Save favorites or persist recent queries to localStorage or backend DB.
-Expand supported component catalog and allow theme customization.
-Implement full WCAG-compliant accessibility audit.
-🤖 AI Usage
+- **Frontend**: Vite + React + TypeScript + Visa Nova Design System
+- **Backend**: Express.js with a lightweight REST API
+- **Component Suggestion Logic**: Rule-based keyword matcher (no AI or ML)
+- **Design**: Fully responsive layout, consistent Nova styling, fixed header, and onboarding tour
 
-ChatGPT was used to brainstorm feature ideas, cleanly structure code, and draft rule-based mappings. All final logic and code integration was written and adapted manually.
+---
+
+## ⚙️ Assumptions & Shortcuts
+
+- 🔍 **No real AI model** – all logic is manually hardcoded via keyword matching
+- 🧠 **Recent queries are stored in memory only**, not persisted
+- 📦 **Only a subset** of commonly-used Nova components are included
+- 🎨 **Theming and variants** assume default Visa Nova styles
+
+---
+
+## 🚀 Improvements With More Time
+
+- 🤖 Integrate a lightweight NLP/LLM backend for smarter intent understanding
+- 🧱 Add real-time live preview of suggested components
+- 📝 Enable saving snippets to localStorage or a database
+- 🌐 Expand component database and support theme switching
+- ♿ Conduct full WCAG 2.1 + VGAR accessibility audit
+
+---
+
+## 🤖 AI Usage
+
+ChatGPT was used to brainstorm features, refine UI copy, and assist in drafting rule-based logic. All application logic and integration were developed and customized manually.
+
+---
+
+## 🔗 Deployment
+
+A live version of the app is deployed at: [https://your-vercel-deploy-link.com](https://your-vercel-deploy-link.com)
+
+---
+
+> Made with 💙 using the Visa Nova Design System.
