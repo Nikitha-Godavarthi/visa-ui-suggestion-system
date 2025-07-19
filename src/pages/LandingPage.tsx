@@ -1,28 +1,30 @@
 "use client"
 import { Typography, Button, Utility, Surface } from "@visa/nova-react"
-import {GenericCodeSnippetHigh, GenericCameraFlashHigh} from "@visa/nova-icons-react"
+import { GenericCodeSnippetHigh, GenericCameraFlashHigh } from "@visa/nova-icons-react"
 import { Sparkles, Palette } from "lucide-react"
 import { Header } from "@/Components/Header"
 
 interface LandingPageProps {
   onGetStarted: () => void
+  onNavigate: (path: string) => void // Added onNavigate prop
 }
 
-export function LandingPage({ onGetStarted }: LandingPageProps) {
+export function LandingPage({ onGetStarted, onNavigate }: LandingPageProps) {
+  // Destructured onNavigate
   return (
     <Utility>
-      <div style={{
-      position: "fixed",
-      top: 0,
-      left: 0,
-      right: 0,
-      zIndex: 1000,
-      backgroundColor: "white",
-      boxShadow: "0 2px 4px rgba(0,0,0,0.05)", 
-    }}
-  >
-      <Header showGetStarted onGetStarted={onGetStarted} />
-
+      <div
+        style={{
+          position: "fixed",
+          top: 0,
+          left: 0,
+          right: 0,
+          zIndex: 1000,
+          backgroundColor: "white",
+          boxShadow: "0 2px 4px rgba(0,0,0,0.05)",
+        }}
+      >
+        <Header showGetStarted onGetStarted={onGetStarted} onNavigate={onNavigate} /> {/* Passed onNavigate */}
       </div>
       <Utility
         vFlexCol
@@ -34,13 +36,7 @@ export function LandingPage({ onGetStarted }: LandingPageProps) {
         }}
       >
         {/* Hero Section */}
-        <Utility
-          vFlexCol
-          vAlignItems="center"
-          vJustifyContent="center"
-          vRowGap={24}
-          style={{ minHeight: "50vh" }}
-        >
+        <Utility vFlexCol vAlignItems="center" vJustifyContent="center" vRowGap={24} style={{ minHeight: "50vh" }}>
           <Utility vFlexCol vAlignItems="center" vRowGap={12}>
             <Typography
               variant="display-1"
@@ -82,7 +78,6 @@ export function LandingPage({ onGetStarted }: LandingPageProps) {
             </Button>
           </Utility>
         </Utility>
-
         {/* Features Section */}
         <Utility vFlexCol vAlignItems="center" vRowGap={32} vPaddingBottom={48}>
           <Typography variant="headline-3" colorScheme="active" style={{ textAlign: "center" }}>
@@ -130,7 +125,6 @@ export function LandingPage({ onGetStarted }: LandingPageProps) {
                 </Typography>
               </Utility>
             </Surface>
-
             {/* Feature 2 */}
             <Surface
               style={{
@@ -162,7 +156,6 @@ export function LandingPage({ onGetStarted }: LandingPageProps) {
                 </Typography>
               </Utility>
             </Surface>
-
             {/* Feature 3 */}
             <Surface
               style={{

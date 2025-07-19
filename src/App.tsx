@@ -3,40 +3,47 @@
 import { useEffect, useState } from "react"
 import { LandingPage } from "@/pages/LandingPage"
 import { AppPage } from "./pages/AppPage"
+import { SignInPage } from "./pages/SignInPage"
+import { SignUpPage } from "./pages/SignUpPage"
+import { FavoritesPage } from "@/pages/FavoritesPage"
 
-type CurrentPage = "landing" | "app"
-const CURRENT_PAGE_KEY = "currentPage"
+
+type CurrentRoute = "/" | "/app" | "/signin" | "/signup" | "/favorites"
 
 function App() {
-  const [currentPage, setCurrentPage] = useState<CurrentPage | null>(null)
+  const [currentRoute, setCurrentRoute] = useState<CurrentRoute>("/")
 
   useEffect(() => {
-    const navType = performance.getEntriesByType("navigation")[0] as PerformanceNavigationTiming
-
-    if (navType && navType.type === "reload") {
-      const sessionPage = sessionStorage.getItem(CURRENT_PAGE_KEY) as CurrentPage | null
-      setCurrentPage(sessionPage || "landing")
-    } else {
-      setCurrentPage("landing")
+    const handleHashChange = () => {
+      const path = (window.location.hash.substring(1) || "/") as CurrentRoute
+      setCurrentRoute(path)
     }
+
+    handleHashChange()
+    window.addEventListener("hashchange", handleHashChange)
+    return () => window.removeEventListener("hashchange", handleHashChange)
   }, [])
 
-  useEffect(() => {
-    if (currentPage) {
-      sessionStorage.setItem(CURRENT_PAGE_KEY, currentPage)
+  const navigateTo = (path: string) => {
+    if (window.location.hash !== `#${path}`) {
+      window.location.hash = path
     }
-  }, [currentPage])
+    setCurrentRoute(path as CurrentRoute)
+  }  
 
-  const handleGetStarted = () => setCurrentPage("app")
-  const handleGoHome = () => setCurrentPage("landing")
-
-  if (!currentPage) return null
-
-  return currentPage === "landing" ? (
-    <LandingPage onGetStarted={handleGetStarted} />
-  ) : (
-    <AppPage onGoHome={handleGoHome} />
-  )
+  switch (currentRoute) {
+    case "/app":
+      return <AppPage onGoHome={() => navigateTo("/")} onNavigate={navigateTo} />
+    case "/signin":
+      return <SignInPage onNavigate={navigateTo} />
+    case "/signup":
+      return <SignUpPage onNavigate={navigateTo} />
+    case "/favorites":
+      return <FavoritesPage onGoHome={() => navigateTo("/")} onNavigate={navigateTo} />
+    case "/":
+    default:
+      return <LandingPage onGetStarted={() => navigateTo("/app")} onNavigate={navigateTo} />
+  }
 }
 
 export default App

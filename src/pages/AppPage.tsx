@@ -2,7 +2,7 @@
 import type React from "react"
 import { useState, useEffect } from "react"
 import { Typography, Button, Input, InputContainer, Utility, Badge, Surface, Chip } from "@visa/nova-react"
-import { VisaIdeaLow, VisaCodeSnippetLow, VisaCopyLow, GenericSearchLow } from "@visa/nova-icons-react"
+import { VisaIdeaLow, VisaCodeSnippetLow, VisaCopyLow, GenericSearchLow, GenericLikeLow} from "@visa/nova-icons-react"
 import { toast } from "sonner"
 import { Sparkles } from "lucide-react"
 import { RecentQueries } from "@/Components/RecentQueries"
@@ -11,28 +11,16 @@ import { Card, CardBody, CardDescription } from "@/Components/UI/card"
 import { fetchSuggestions } from "@/API/suggest";
 import { OnboardingTour } from "@/Components/OnBoardingTour";
 import { useOnboardingTour } from "@/hooks/useOnboardingTour";
+import axios from "@/config/axios"
 
 
-const RECENT_QUERY_KEY = "recentQueries";
-
-  function loadRecentQueries(): string[] {
-    try {
-      return JSON.parse(localStorage.getItem(RECENT_QUERY_KEY) || "[]");
-    } catch {
-      return [];
-    }
-  }
-
-  function saveRecentQuery(query: string) {
-    if (!query) return;
-    const existing = loadRecentQueries().filter((q) => q !== query);
-    const updated = [query, ...existing].slice(0, 5);
-    localStorage.setItem(RECENT_QUERY_KEY, JSON.stringify(updated));
-  }
-
-
-
-export function AppPage({ onGoHome }: { onGoHome: () => void }) {
+export function AppPage({
+  onGoHome,
+  onNavigate,
+}: {
+  onGoHome: () => void
+  onNavigate: (path: string) => void
+}) {
   const [query, setQuery] = useState("")
   const [isFocused, setIsFocused] = useState(false)
   const [suggestions, setSuggestions] = useState<any>(null)
@@ -41,29 +29,64 @@ export function AppPage({ onGoHome }: { onGoHome: () => void }) {
   const [recentQueries, setRecentQueries] = useState<string[]>([])
   const [copiedComponentIndex, setCopiedComponentIndex] = useState<number | null>(null)
   const { showTour, dismissTour } = useOnboardingTour();
+  const [isFavorite, setIsFavorite] = useState(false);
+
+
+  const fetchRecentQueries = async () => {
+    try {
+      const res = await axios.get("/queries");
+      setRecentQueries(res.data);
+    } catch (error) {
+      console.error("Failed to fetch recent queries", error);
+    }
+  }
+
+  const saveRecentQuery = async (query: string) => {
+    try {
+      const res = await axios.post("/queries", { query });
+      setRecentQueries(res.data);
+    } catch (error) {
+      console.error("Failed to save recent query", error);
+    }
+  }
 
   const handleSuggest = async () => {
     if (!query.trim()) return;
-  
-    setIsLoading(true);
 
+    setIsLoading(true);
     try {
       const result = await fetchSuggestions(query);
       setSuggestions(result);
-      saveRecentQuery(query); // Save to localStorage
-      setRecentQueries(loadRecentQueries()); // Refresh view
+      await saveRecentQuery(query);
     } catch (error) {
       console.error("Suggestion error:", error);
     } finally {
       setIsLoading(false);
     }
   };
-  
+
   const handleKeyPress = (e: React.KeyboardEvent) => {
     if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) {
       handleSuggest()
     }
   }
+
+  const handleFavorite = async () => {
+    if (!query || !suggestions?.code) return;
+  
+    try {
+      await axios.post("/favorites", {
+        prompt: query,
+        code: suggestions.code,
+      });
+      setIsFavorite(true);
+      toast.success("Saved to favorites!");
+    } catch (error) {
+      console.error("Failed to save favorite", error);
+      toast.error("Failed to save favorite.");
+    }
+  };
+  
 
   const handleComponentCopy = (code: string, index: number) => {
     navigator.clipboard.writeText(code).then(() => {
@@ -72,14 +95,10 @@ export function AppPage({ onGoHome }: { onGoHome: () => void }) {
     })
   }
 
-      // Load recent queries on mount
-    useEffect(() => {
-      const existingQueries = loadRecentQueries();
-      if (existingQueries.length > 0) {
-        setRecentQueries(existingQueries);
-      }
-    }, []);
-
+  useEffect(() => {
+    fetchRecentQueries();
+  }, []);
+    
 
   return (
     <>
@@ -96,7 +115,7 @@ export function AppPage({ onGoHome }: { onGoHome: () => void }) {
       boxShadow: "0 2px 4px rgba(0,0,0,0.05)",
     }}
   >
-    <Header showGetStarted={false} onGoHome={onGoHome} />
+    <Header onGoHome={onGoHome} onNavigate={onNavigate} />
   </div>
       <Utility
         vFlexCol
@@ -174,9 +193,13 @@ export function AppPage({ onGoHome }: { onGoHome: () => void }) {
                   </Utility>
                 </InputContainer>
                 <Utility vFlex vJustifyContent="between" vAlignItems="center" vMarginTop={8} style={{ flexWrap: "wrap", gap: 12 }}>
-                  <Typography variant="label">
-                    Press <Badge badgeType="subtle">Cmd+Enter</Badge> to generate
-                  </Typography>
+                <Utility vFlex vAlignItems="center" vGap={6}>
+                  <Typography variant="label" as="span">Press</Typography>
+                    <Badge badgeType="subtle">Cmd+Enter</Badge>
+                  <Typography variant="label" as="span">to generate</Typography>
+                </Utility>
+
+
                   <Button
                     onClick={handleSuggest}
                     disabled={!query.trim() || isLoading}
@@ -321,40 +344,63 @@ export function AppPage({ onGoHome }: { onGoHome: () => void }) {
                               }}/>
                             <Typography variant="headline-3">Generated Code</Typography>
                           </Utility>
-                          {/* Copy Button */}
-                          <Utility
-                            as="button"
-                            vFlex
-                            vAlignItems="center"
-                            vGap={2}
-                            style={{
-                              cursor: "pointer",
-                              background: "transparent",
-                              border: "none",
-                              fontWeight: 500,
-                              padding: "4px 8px",
-                              borderRadius: 6,
-                              color: copied ? "#16a34a" : "#2563eb",
-                            }}
-                            onClick={() => {
-                              navigator.clipboard.writeText(suggestions.code)
-                              toast.success("Code copied to clipboard!")
-                              setCopied(true)
-                              setTimeout(() => setCopied(false), 5000)
-                            }}
-                          >
-                            {copied ? (
-                              <>
+                          <Utility vFlex vAlignItems="center" vGap={8}>
+                            <button
+                              onClick={handleFavorite}
+                              style={{
+                                background: "transparent",
+                                border: "none",
+                                cursor: "pointer",
+                                padding: 4,
+                                display: "flex",
+                                alignItems: "center",
+                              }}
+                              aria-label="Save to favorites"
+                            >
+                              <GenericLikeLow
+                                style={{
+                                  width: 20,
+                                  height: 20,
+                                  color: isFavorite ? "#dc2626" : "#9ca3af", 
+                                  transition: "color 0.3s ease",
+                                }}
+                              />
+                            </button>
+
+                            <Utility
+                              as="button"
+                              vFlex
+                              vAlignItems="center"
+                              vGap={2}
+                              style={{
+                                cursor: "pointer",
+                                background: "transparent",
+                                border: "none",
+                                fontWeight: 500,
+                                padding: "4px 8px",
+                                borderRadius: 6,
+                                color: copied ? "#16a34a" : "#2563eb",
+                              }}
+                              onClick={() => {
+                                navigator.clipboard.writeText(suggestions.code)
+                                toast.success("Code copied to clipboard!")
+                                setCopied(true)
+                                setTimeout(() => setCopied(false), 5000)
+                              }}
+                            >
+                              {copied ? (
                                 <span>Copied!</span>
-                              </>
-                            ) : (
-                              <>
-                                <VisaCopyLow style={{ width: 16, height: 16 }} />
-                                <CardDescription colorScheme="active">Copy Code</CardDescription>
-                              </>
-                            )}
+                              ) : (
+                                <>
+                                  <VisaCopyLow style={{ width: 16, height: 16 }} />
+                                  <CardDescription colorScheme="active">Copy Code</CardDescription>
+                                </>
+                              )}
+                            </Utility>
                           </Utility>
+
                         </Utility>
+                        
                         <CardDescription>Ready-to-use React component code</CardDescription>
                         <Utility vPaddingTop={20}>
                           <Surface
